@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: villa-niva
+data:
+  FRONTEND_URL: "http://villa-frontend.villa-niva.svc.cluster.local:3000"
+  MONGODB_URI: "mongodb://mongo.villa-niva.svc.cluster.local:27017/villa_niva"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: villa-backend
+  namespace: villa-niva
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: villa-backend }
+  template:
+    metadata:
+      labels: { app: villa-backend }
+    spec:
+      containers:
+      - name: backend
+        image: ghcr.io/example/villa-niva-backend:latest
+        ports: [{ containerPort: 5000 }]
+        env:
+        - name: PORT
+          value: "5000"
+        - name: FRONTEND_URL
+          valueFrom: { configMapKeyRef: { name: backend-config, key: FRONTEND_URL } }
+        - name: MONGODB_URI
+          valueFrom: { configMapKeyRef: { name: backend-config, key: MONGODB_URI } }
+        resources:
+          requests: { cpu: "100m", memory: "128Mi" }
+          limits: { cpu: "500m", memory: "512Mi" }
+        readinessProbe:
+          httpGet: { path: /api/health, port: 5000 }
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet: { path: /api/health, port: 5000 }
+          initialDelaySeconds: 15
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: villa-backend
+  namespace: villa-niva
+spec:
+  selector: { app: villa-backend }
+  ports:
+  - port: 5000
+    targetPort: 5000
