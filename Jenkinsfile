@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = "https://registry-1.docker.io/v1/"
-        BACKEND_IMAGE = "yagya123/redis"
-        FRONTEND_IMAGE   = "yagya123/webapp"
+        BACKEND_IMAGE = "yagya123/backend"
+        FRONTEND_IMAGE   = "yagya123/frontend"
         BACKEND_TAG   = "v1"
         FRONTEND_TAG     = "v1"
     }
