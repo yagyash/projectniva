@@ -81,10 +81,10 @@ export default function HomePage() {
     }
   }
 
-  function renderCalendar(){
+  function renderCalendar(): React.ReactNode[]{
     const daysInMonth = getDaysInMonth(currentMonth, currentYear);
     const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
-    const elements: JSX.Element[] = [];
+    const elements: React.ReactNode[] = [];
     for (let i=0;i<firstDay;i++) elements.push(<div key={`e-${i}`} className="p-2" />);
     for (let d=1; d<=daysInMonth; d++){
       const date = new Date(currentYear, currentMonth, d);
