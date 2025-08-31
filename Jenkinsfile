@@ -5,15 +5,15 @@ pipeline {
         DOCKER_REGISTRY = "https://registry-1.docker.io/v1/"
         BACKEND_IMAGE = "yagya123/redis"
         FRONTEND_IMAGE   = "yagya123/webapp"
-        BACKEND_TAG   = "y_redis"
-        FRONTEND_TAG     = "y_web"
+        BACKEND_TAG   = "v1"
+        FRONTEND_TAG     = "v1"
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/yagyash/jenkins-k8s-deployment.git'
+                git branch: 'main', url: 'https://github.com/yagyash/projectniva.git'
             }
         }
 
